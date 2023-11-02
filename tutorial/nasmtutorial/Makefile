@@ -1,6 +1,8 @@
 SRC = ${wildcard src/*.asm}
 OBJ = ${patsubst src/%.asm,obj/%.o, ${SRC}}
-BIN = hello triangle hola
+BINP = hello triangle
+BINC = hola fib
+BIN = ${BINP} ${BINC}
 
 all: ${BIN}
 	@echo all built
@@ -19,8 +21,11 @@ obj:
 obj/%.o: src/%.asm obj
 	nasm -felf64 -o $@ $<
 
-${BIN}:
+${BINP}:
 	ld -o $@ $<
+
+${BINC}:
+	gcc -no-pie -z noexecstack -o $@ $<
 
 obj/hello.o: src/hello.asm
 hello: obj/hello.o
@@ -30,6 +35,8 @@ triangle: obj/triangle.o
 
 obj/hola.o: src/hola.asm
 hola: obj/hola.o
-	gcc -no-pie -z noexecstack -o $@ $<
+
+obj/fib.o: src/fib.asm
+fib: obj/fib.o
 
 .PHONY: all clean
