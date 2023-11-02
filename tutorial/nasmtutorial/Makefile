@@ -1,6 +1,6 @@
 SRC = ${wildcard src/*.asm}
 OBJ = ${patsubst src/%.asm,obj/%.o, ${SRC}}
-BIN = hello triangle
+BIN = hello triangle hola
 
 all: ${BIN}
 	@echo all built
@@ -27,5 +27,9 @@ hello: obj/hello.o
 
 obj/triangle.o: src/triangle.asm
 triangle: obj/triangle.o
+
+obj/hola.o: src/hola.asm
+hola: obj/hola.o
+	gcc -no-pie -z noexecstack -o $@ $<
 
 .PHONY: all clean
