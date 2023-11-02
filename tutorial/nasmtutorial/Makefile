@@ -1,6 +1,6 @@
 SRC = ${wildcard src/*.asm}
 OBJ = ${patsubst src/%.asm,obj/%.o, ${SRC}}
-BIN = hello
+BIN = hello triangle
 
 all: ${BIN}
 	@echo all built
@@ -16,14 +16,16 @@ clean:
 obj:
 	mkdir -p obj
 
-${OBJ}: ${SRC} obj
+obj/%.o: src/%.asm obj
 	nasm -felf64 -o $@ $<
 
-${BIN}: ${OBJ}
+${BIN}:
 	ld -o $@ $<
 
 obj/hello.o: src/hello.asm
 hello: obj/hello.o
 
+obj/triangle.o: src/triangle.asm
+triangle: obj/triangle.o
 
 .PHONY: all clean
